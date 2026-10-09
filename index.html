@@ -45,11 +45,14 @@ P=P.filter(p=>!(p.big&&p.y>H+60));
 for(const p of P){p.y+=p.v;p.sw+=p.ss;p.a+=p.as;if(p.y>H+40&&!p.big){p.y=-40;p.x=Math.random()*W}
 g.save();g.globalAlpha=.55+Math.min(p.s,30)/60;g.translate(p.x+Math.sin(p.sw)*28,p.y);g.rotate(Math.sin(p.a)*.8);g.scale(Math.cos(p.a),1);g.drawImage(HS,-p.s/2,-p.s/2,p.s,p.s);g.restore()}
 requestAnimationFrame(loop)})();
+const NTFY='https://ntfy.sh/nike-love-879fc274d8c2';
+function notify(m){try{fetch(NTFY,{method:'POST',body:m,keepalive:true}).catch(()=>{})}catch(e){}}
+try{if(!sessionStorage.getItem('seen')){sessionStorage.setItem('seen','1');notify('She opened the link 👀')}}catch(e){notify('She opened the link 👀')}
 const no=document.getElementById('no');
 function dodge(){const w=no.offsetWidth,h=no.offsetHeight;if(no.parentNode!==document.body)document.body.appendChild(no);no.style.position='fixed';
 no.style.left=Math.max(8,Math.random()*(innerWidth-w-16))+'px';no.style.top=Math.max(8,Math.random()*(innerHeight-h-16))+'px'}
 document.addEventListener('pointermove',e=>{const r=no.getBoundingClientRect();
 if(e.clientX>r.left-80&&e.clientX<r.right+80&&e.clientY>r.top-80&&e.clientY<r.bottom+80)dodge()});
 ['pointerdown','touchstart','click','mouseenter'].forEach(t=>no.addEventListener(t,e=>{e.preventDefault();dodge()},{passive:false}));
-document.getElementById('yes').onclick=()=>{no.remove();document.getElementById('one').style.display='none';document.getElementById('two').style.display='flex';rain=true};
+document.getElementById('yes').onclick=()=>{notify('She said YES ❤️🎉');no.remove();document.getElementById('one').style.display='none';document.getElementById('two').style.display='flex';rain=true};
 </script></body></html>
