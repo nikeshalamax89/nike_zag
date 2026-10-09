@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--red:#ff2d4d;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{background:radial-gradient(circle at 50% 35%,#2e030b,#000 72%);color:#fff;font-family:'Playfair Display',Georgia,serif;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center}
+canvas{position:fixed;inset:0;pointer-events:none;z-index:0}
+.pg{position:relative;z-index:1;width:min(92%,520px);padding:24px;animation:in .7s cubic-bezier(.2,1.3,.4,1)}
+@keyframes in{from{opacity:0;transform:translateY(30px) scale(.92)}}
+.dog{font-size:84px;animation:bob 2.4s ease-in-out infinite;filter:drop-shadow(0 8px 18px rgba(255,45,77,.5))}
+@keyframes bob{50%{transform:translateY(-10px) rotate(-4deg)}}
+h1{font-size:clamp(1.7rem,6vw,2.4rem);font-weight:900;margin:14px 0 10px;text-shadow:0 2px 20px rgba(255,45,77,.6)}
+h1 em{color:var(--red);font-style:normal}
+p{font-style:italic;font-weight:500;opacity:.85;margin:0 0 26px;font-size:1.1rem}
+.row{display:flex;gap:18px;justify-content:center;min-height:60px}
+.b{font:700 1.05rem 'Playfair Display',Georgia,serif;border:0;border-radius:999px;padding:13px 34px;cursor:pointer;color:#fff;background:linear-gradient(180deg,#ff5470,#d10f2f);border-top:1px solid rgba(255,255,255,.45);box-shadow:0 6px 0 #7a0016,0 12px 22px rgba(255,0,40,.4);transition:transform .12s,box-shadow .12s,left .22s,top .22s}
+.b:hover{transform:translateY(-2px)}.b:active{transform:translateY(5px);box-shadow:0 1px 0 #7a0016}
+.b.no{background:linear-gradient(180deg,#fff,#e4e4e4);color:#b3001b;box-shadow:0 6px 0 #9a9a9a,0 12px 22px rgba(255,255,255,.15);z-index:5}
+#two{display:none;position:fixed;inset:0;z-index:1;align-items:center;justify-content:center;flex-direction:column;padding:24px}
+#two h2{font-size:clamp(2.6rem,13vw,7rem);font-weight:900;line-height:1.05;margin:0;text-shadow:0 0 40px rgba(255,45,77,.8);animation:beat 1.2s ease-in-out infinite}
+#two h2 em{color:var(--red);font-style:normal}
+#two .big{font-size:clamp(4rem,18vw,9rem);animation:beat 1.2s ease-in-out infinite}
+#two p{margin:18px 0 0;font-size:1.3rem}
+@keyframes beat{50%{transform:scale(1.07)}}
+</style></head><body>
+<canvas id="cv"></canvas>
+<div class="pg" id="one">
+<div class="dog">🐶</div>
+<h1>I love you <em>❤</em><br>Will you be mine?</h1>
+<p>You're my favorite hello, always.</p>
+<div class="row"><button class="b" id="yes">YES ♥</button><button class="b no" id="no">no 🐾</button></div>
+</div>
+<div id="two"><div class="big">❤️</div><h2>I Love You <em>Too</em></h2><p>Forever &amp; always 🐶</p></div>
+<script>
+const cv=document.getElementById('cv'),g=cv.getContext('2d');let W,H,P=[],rain=false;
+const HS=(()=>{const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d');x.font='52px serif';x.textAlign='center';x.textBaseline='middle';x.fillText('\u2764\ufe0f',32,34);return c})();
+function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight}rs();addEventListener('resize',rs);
+const mk=(top,big)=>({x:Math.random()*W,y:top?-60:Math.random()*H,s:big?18+Math.random()*34:6+Math.random()*10,v:big?2+Math.random()*3:.5+Math.random()*1.3,sw:Math.random()*6.28,ss:.01+Math.random()*.02,a:Math.random()*6.28,as:.02+Math.random()*.04,big});
+for(let i=0;i<28;i++)P.push(mk(false));
+(function loop(){g.clearRect(0,0,W,H);
+if(rain&&P.length<110&&Math.random()<.6)P.push(mk(true,true));
+P=P.filter(p=>!(p.big&&p.y>H+60));
+for(const p of P){p.y+=p.v;p.sw+=p.ss;p.a+=p.as;if(p.y>H+40&&!p.big){p.y=-40;p.x=Math.random()*W}
+g.save();g.globalAlpha=.55+Math.min(p.s,30)/60;g.translate(p.x+Math.sin(p.sw)*28,p.y);g.rotate(Math.sin(p.a)*.8);g.scale(Math.cos(p.a),1);g.drawImage(HS,-p.s/2,-p.s/2,p.s,p.s);g.restore()}
+requestAnimationFrame(loop)})();
+const no=document.getElementById('no');
+function dodge(){const w=no.offsetWidth,h=no.offsetHeight;if(no.parentNode!==document.body)document.body.appendChild(no);no.style.position='fixed';
+no.style.left=Math.max(8,Math.random()*(innerWidth-w-16))+'px';no.style.top=Math.max(8,Math.random()*(innerHeight-h-16))+'px'}
+document.addEventListener('pointermove',e=>{const r=no.getBoundingClientRect();
+if(e.clientX>r.left-80&&e.clientX<r.right+80&&e.clientY>r.top-80&&e.clientY<r.bottom+80)dodge()});
+['pointerdown','touchstart','click','mouseenter'].forEach(t=>no.addEventListener(t,e=>{e.preventDefault();dodge()},{passive:false}));
+document.getElementById('yes').onclick=()=>{no.remove();document.getElementById('one').style.display='none';document.getElementById('two').style.display='flex';rain=true};
+</script></body></html>
